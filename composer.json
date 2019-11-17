@@ -1,0 +1,50 @@
+{
+    "name": "code-bushido/foundation",
+    "type": "library",
+    "description": "Bushido PHP Foundation",
+    "keywords": [
+        "code-bushido",
+        "foundation"
+    ],
+    "homepage": "https://github.com/code-bushido/foundation",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Wojciech Nowicki",
+            "email": "wnowicki@me.com",
+            "homepage": "http://wojciechnowicki.com",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php" : "~7.1"
+    },
+    "require-dev": {
+        "friendsofphp/php-cs-fixer": "^2.16",
+        "phpstan/phpstan": "^0.11.19",
+        "phpunit/phpunit": ">=7.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Bushido\\Foundation\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "BushidoTests\\Foundation\\": "tests"
+        }
+    },
+    "scripts": {
+        "test": "phpunit",
+        "lint": "vendor/bin/phpstan analyse src",
+        "cs-fix": "vendor/bin/php-cs-fixer fix src/"
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.0-dev"
+        }
+    },
+    "config": {
+        "sort-packages": true
+    }
+}
