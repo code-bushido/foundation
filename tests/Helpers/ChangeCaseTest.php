@@ -21,11 +21,13 @@ class ChangeCaseTest extends \PHPUnit\Framework\TestCase
         $this->assertSame('fred_buddy', ChangeCase::camelToSnake('FredBuddy'));
         $this->assertSame('one_two_three', ChangeCase::camelToSnake('OneTwoThree'));
     }
+
     public function testSnakeToCamel()
     {
         $this->assertSame('FredBuddy', ChangeCase::snakeToCamel('fred_buddy'));
         $this->assertSame('OneTwoThree', ChangeCase::snakeToCamel('one_two_three'));
     }
+
     public function testSnakeToCamelLow()
     {
         $this->assertSame('oneTwoThree', ChangeCase::snakeToCamel('one_two_three', true));
