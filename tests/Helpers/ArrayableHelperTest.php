@@ -25,6 +25,13 @@ class ArrayableHelperTest extends TestCase
         $this->assertSame($example, ArrayableHelper::processArray($example));
     }
 
+    public function testArray()
+    {
+        $example = ['a' => 'b', 'c' => ['x', 'y', 'z']];
+
+        $this->assertSame($example, ArrayableHelper::processArray($example));
+    }
+
     public function testArrayable()
     {
         $example = ['a' => 'b', 'c' => (new ExampleArrayble())];
