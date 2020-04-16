@@ -13,6 +13,7 @@ declare(strict_types=1);
 namespace BushidoTests\Foundation\SmartEntity;
 
 use Bushido\Foundation\Contracts\Makeable;
+use Bushido\Foundation\Exceptions\InvalidArgumentException;
 use Bushido\Foundation\SmartEntity\Entity;
 use Bushido\Foundation\SmartEntity\FlexEntity;
 use \PHPUnit\Framework\TestCase;
@@ -33,6 +34,14 @@ class FlexEntityTest extends TestCase
         $entity = FlexEntity::make(['a' => 1, 'b' => 2]);
 
         $this->assertSame(1, $entity->getA());
+    }
+
+    public function testNonExisitingMethod()
+    {
+        $entity = new FlexEntity();
+
+        $this->expectException(\RuntimeException::class);
+        $entity->badMethod();
     }
 
     public function testToArray()
@@ -59,6 +68,21 @@ class FlexEntityTest extends TestCase
         $this->assertSame('bbc', $entity->getX());
     }
 
+    public function testSetEmpty()
+    {
+        $entity = new FlexEntity();
+
+        $this->expectException(\RuntimeException::class);
+        $entity->setX();
+    }
+
+    public function testGetEmpty()
+    {
+        $entity = new FlexEntity();
+
+        $this->assertSame(null, $entity->getX());
+    }
+
     public function testAdd()
     {
         $entity = new FlexEntity();
@@ -68,10 +92,33 @@ class FlexEntityTest extends TestCase
         $this->assertSame(['bbc'], $entity->getX());
     }
 
+    public function testAddToNonArray()
+    {
+        $entity = new FlexEntity();
+
+        $entity->setX('bbc');
+
+        $this->expectException(InvalidArgumentException::class);
+        $entity->addX('vvv');
+    }
+
     public function testToJson()
     {
         $entity = FlexEntity::make(['a' => 1, 'b' => 2]);
 
         $this->assertSame('{"a":1,"b":2}', $entity->toJson());
+    }
+
+    public function testNameConvention()
+    {
+        $ar = ['aaa' => 1, 'bb_cc' => 2];
+        $entity = FlexEntity::make($ar);
+
+        $this->assertSame(1, $entity->getAaa());
+        $this->assertSame(2, $entity->getBbCc());
+
+        $entity->setXyZ(3);
+
+        $this->assertArrayHasKey('xy_z', $entity->toArray());
     }
 }
