@@ -10,7 +10,7 @@
 
 declare(strict_types=1);
 
-namespace BushidoTests\Foundation;
+namespace BushidoTests\Foundation\Helpers;
 
 use Bushido\Foundation\Contracts\Arrayable;
 use Bushido\Foundation\Helpers\ArrayableHelper;

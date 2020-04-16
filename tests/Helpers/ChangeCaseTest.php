@@ -10,11 +10,12 @@
 
 declare(strict_types=1);
 
-namespace BushidoTests\Foundation;
+namespace BushidoTests\Foundation\Helpers;
 
 use Bushido\Foundation\Helpers\ChangeCase;
+use \PHPUnit\Framework\TestCase;
 
-class ChangeCaseTest extends \PHPUnit\Framework\TestCase
+class ChangeCaseTest extends TestCase
 {
     public function testCamelToSnake()
     {
