@@ -40,7 +40,7 @@ class FlexEntity implements Entity
 
     public function toJson(int $options = 0): string
     {
-        return json_encode($this->toArray(), $options);
+        return (string) json_encode($this->toArray(), $options);
     }
 
     public function __toString(): string

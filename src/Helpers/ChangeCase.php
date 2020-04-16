@@ -15,7 +15,7 @@ class ChangeCase
     public static function camelToSnake(string $string): string
     {
         $string[0] = strtolower($string[0]);
-        return strtolower(preg_replace("/([A-Z])/", "_$1", $string));
+        return strtolower((string) preg_replace("/([A-Z])/", "_$1", $string));
     }
 
     public static function snakeToCamel(string $string, bool $firstLowercase = false): string
