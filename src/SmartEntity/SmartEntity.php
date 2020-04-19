@@ -12,6 +12,7 @@
 namespace Bushido\Foundation\SmartEntity;
 
 use Bushido\Foundation\Contracts\Makeable;
+use Bushido\Foundation\Exception;
 use Bushido\Foundation\Exceptions\InvalidArgumentException;
 
 /**
@@ -29,7 +30,7 @@ abstract class SmartEntity extends FlexEntity
         $value = $this->fetchValue($arguments, $propertyName);
 
         if (!$this->isPropertySet($propertyName)) {
-            throw new \RuntimeException();
+            throw new \RuntimeException('Property [' . $propertyName . '] not set');
         }
 
         $type = $this->properties[$propertyName];
@@ -50,7 +51,7 @@ abstract class SmartEntity extends FlexEntity
             return $this->processArrayOfObj($value, $type);
         }
 
-        parent::set($propertyName, [$this->processObjectType($value, $type)]);
+        return parent::set($propertyName, [$this->processObjectType($value, $type)]);
     }
 
     private function isInternalType($type)
@@ -60,7 +61,7 @@ abstract class SmartEntity extends FlexEntity
 
     private function isPropertySet($propertyName): bool
     {
-        return count($this->properties) == 0 || array_key_exists($propertyName, $this->properties);
+        return array_key_exists($propertyName, $this->properties);
     }
 
     private function processObjectType($value, $class)
@@ -76,7 +77,7 @@ abstract class SmartEntity extends FlexEntity
         }
 
         throw new InvalidArgumentException(
-            'Expected value to be object of [' . $class . '] type ' . $this->checkType($value) . '] was given'
+            'Expected value to be object of [' . $class . '] type different type was given'
         );
     }
 

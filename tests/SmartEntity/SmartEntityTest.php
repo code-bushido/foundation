@@ -13,7 +13,9 @@ declare(strict_types=1);
 namespace BushidoTests\Foundation\SmartEntity;
 
 use Bushido\Foundation\Contracts\Makeable;
+use Bushido\Foundation\Exceptions\InvalidArgumentException;
 use Bushido\Foundation\SmartEntity\Entity;
+use Bushido\Foundation\SmartEntity\FlexEntity;
 use Bushido\Foundation\SmartEntity\SmartEntity;
 use PHPUnit\Framework\TestCase;
 
@@ -35,6 +37,38 @@ class SmartEntityTest extends TestCase
         $this->assertInstanceOf(SmartEntity::class, $entity);
     }
 
+    public function testNotDefined()
+    {
+        $this->expectException(\RuntimeException::class);
+
+        TestEntity::make([])->setWrong(123);
+    }
+
+    public function testWrongInternalType()
+    {
+        $this->expectException(InvalidArgumentException::class);
+
+        TestEntity::make([])->setBoolProperty(123);
+    }
+
+    public function testWrongObjectType()
+    {
+        $this->expectException(InvalidArgumentException::class);
+
+        TestEntity::make([])->setFlexProperty(123);
+    }
+
+    public function testSetObject()
+    {
+        $entity = TestEntity::make([])->setFlexProperty([]);
+
+        $this->assertInstanceOf(FlexEntity::class, $entity->getFlexProperty());
+
+        $entity->setFlexProperty(FlexEntity::make([]));
+
+        $this->assertInstanceOf(FlexEntity::class, $entity->getFlexProperty());
+    }
+
     public function testToArray()
     {
         $ar = [
@@ -44,6 +78,7 @@ class SmartEntityTest extends TestCase
             'numeric_property' => 34,
             'float_property' => 7.5,
             'array_property' => ['test'],
+            'flex_property' => [[]],
         ];
 
         $entity = TestEntity::make($ar);

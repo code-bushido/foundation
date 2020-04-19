@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace BushidoTests\Foundation\SmartEntity;
 
+use Bushido\Foundation\SmartEntity\FlexEntity;
 use Bushido\Foundation\SmartEntity\SmartEntity;
 
 class TestEntity extends SmartEntity
@@ -23,6 +24,7 @@ class TestEntity extends SmartEntity
         'numeric_property' => self::TYPE_NUMERIC,
         'float_property' => self::TYPE_FLOAT,
         'array_property' => self::TYPE_ARRAY,
+        'flex_property' => FlexEntity::class,
     ];
 
 }
