@@ -68,10 +68,9 @@ class FlexEntity implements Entity
      * @param array $arguments
      * @return $this
      */
-    private function set(string $property, array $arguments)
+    protected function set(string $property, array $arguments)
     {
-        $this->checkArguments($arguments, $property);
-        $this->data[$property] = $arguments[0];
+        $this->data[$property] = $this->fetchValue($arguments, $property);
 
         return $this;
     }
@@ -96,10 +95,12 @@ class FlexEntity implements Entity
         throw new InvalidArgumentException('Expected property [' . $name . '] to be array type');
     }
 
-    private function checkArguments(array $arguments, $property): void
+    protected function fetchValue(array $arguments, $propertyName)
     {
         if (count($arguments) == 0) {
-            throw new \RuntimeException('Missing argument on method ' . __CLASS__ . '::set_' . $property . '() call');
+            throw new \RuntimeException('Missing argument on ' . __CLASS__ . '::set_' . $propertyName . '() call');
         }
+
+        return $arguments[0];
     }
 }

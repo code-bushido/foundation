@@ -36,7 +36,7 @@ class FlexEntityTest extends TestCase
         $this->assertSame(1, $entity->getA());
     }
 
-    public function testNonExisitingMethod()
+    public function testNonExistingMethod()
     {
         $entity = new FlexEntity();
 
