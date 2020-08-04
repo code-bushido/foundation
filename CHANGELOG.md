@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `ChangeCase` class
 - `Entity` interface
 - `FlexEntity` class
+- `PsrLoggerTrait` trait
 
 ## 0.0.1 - 2019-11-20
 ### Added
