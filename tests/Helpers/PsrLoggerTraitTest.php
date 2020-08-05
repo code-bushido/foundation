@@ -21,6 +21,7 @@ class PsrLoggerTraitTest extends TestCase
 {
     use PsrLoggerTrait;
 
+    /** @var LoggerInterface */
     private $logger;
 
     protected function getLogger(): ?LoggerInterface
