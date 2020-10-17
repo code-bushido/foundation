@@ -59,6 +59,10 @@ abstract class SmartEntity extends FlexEntity
         return parent::set($propertyName, [$this->processObjectType($value, $type)]);
     }
 
+    /**
+     * @param int|string $type
+     * @return bool
+     */
     private function isInternalType($type): bool
     {
         return is_numeric($type) && array_key_exists($type, self::INTERNAL_TYPES);
@@ -70,8 +74,8 @@ abstract class SmartEntity extends FlexEntity
     }
 
     /**
-     * @param $value
-     * @param $class
+     * @param mixed $value
+     * @param string $class
      * @return mixed
      * @throws Exception
      * @throws InvalidArgumentException
@@ -88,7 +92,9 @@ abstract class SmartEntity extends FlexEntity
             return $value;
         }
 
-        throw new InvalidArgumentException('Expected value to be object of [' . $class . '] type different type was given');
+        throw new InvalidArgumentException(
+            'Expected value to be object of [' . $class . '] type different type was given'
+        );
     }
 
     /**
@@ -112,7 +118,7 @@ abstract class SmartEntity extends FlexEntity
 
     /**
      * @param array $value
-     * @param $type
+     * @param mixed $type
      * @return array
      * @throws Exception
      * @throws InvalidArgumentException
