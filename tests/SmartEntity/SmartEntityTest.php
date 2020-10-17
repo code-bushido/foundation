@@ -13,6 +13,7 @@ declare(strict_types=1);
 namespace BushidoTests\Foundation\SmartEntity;
 
 use Bushido\Foundation\Contracts\Makeable;
+use Bushido\Foundation\Exception;
 use Bushido\Foundation\Exceptions\InvalidArgumentException;
 use Bushido\Foundation\SmartEntity\Entity;
 use Bushido\Foundation\SmartEntity\FlexEntity;
@@ -69,11 +70,21 @@ class SmartEntityTest extends TestCase
         $this->assertInstanceOf(FlexEntity::class, $entity->getFlexProperty());
     }
 
+    public function testSetArrayOfObjects()
+    {
+        $entity = TestEntity::make([]);
+
+        $entity->setTestArray(['a' => [], [], []]);
+
+        $this->assertInstanceOf(TestEntity::class, $entity->getTestArray()['a']);
+    }
+
     public function testAddObject()
     {
         $entity = TestEntity::make([]);
 
         $entity->addTestArray([], 'x');
+        $entity->addTestArray(null, 'y');
 
         $this->assertInstanceOf(TestEntity::class, $entity->getTestArray()['x']);
     }
@@ -87,6 +98,16 @@ class SmartEntityTest extends TestCase
         $entity->addTestArray(FlexEntity::make([]));
     }
 
+    public function testAddNonArray()
+    {
+        $entity = TestEntity::make([]);
+
+        $this->expectException(Exception::class);
+        $this->expectExceptionMessage('Can not use addProperty on non object array property');
+
+        $entity->addFlexProperty([]);
+    }
+
     public function testClone()
     {
         $entity = TestEntity::make(['flex_property' => FlexEntity::make([])]);
@@ -94,6 +115,16 @@ class SmartEntityTest extends TestCase
         $entityTwo = clone $entity;
 
         $this->assertNotSame($entity->getFlexProperty(), $entityTwo->getFlexProperty());
+    }
+
+    public function testNonExistingClass()
+    {
+        $entity = TestEntity::make([]);
+
+        $this->expectException(Exception::class);
+        $this->expectExceptionMessage('Non existing class or interface [\Something\Not\Existing]');
+
+        $entity->setWrongClass([]);
     }
 
     public function testToArray()

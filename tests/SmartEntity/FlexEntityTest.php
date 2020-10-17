@@ -137,7 +137,7 @@ class FlexEntityTest extends TestCase
 
     public function testClone()
     {
-        $entity = FlexEntity::make(['obj' => FlexEntity::make([])]);
+        $entity = FlexEntity::make(['obj' => FlexEntity::make([]), [1,2,3,4]]);
 
         $entityTwo = clone $entity;
 

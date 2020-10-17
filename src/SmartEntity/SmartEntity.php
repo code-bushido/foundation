@@ -53,7 +53,7 @@ abstract class SmartEntity extends FlexEntity
         }
 
         if ($this->isTypeArrayOfObjects($type) && is_array($value)) {
-            $value = $this->processArrayOfObj($value, $type);
+            return parent::set($propertyName, [$this->processArrayOfObj($value, $type)]);
         }
 
         return parent::set($propertyName, [$this->processObjectType($value, $type)]);
@@ -128,8 +128,8 @@ abstract class SmartEntity extends FlexEntity
         $ar = [];
         $class = $this->getClassNameFromType($type);
 
-        foreach ($value as $obj) {
-            $ar[] = $this->processObjectType($obj, $class);
+        foreach ($value as $key => $obj) {
+            $ar[$key] = $this->processObjectType($obj, $class);
         }
 
         return $ar;

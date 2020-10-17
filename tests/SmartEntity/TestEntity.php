@@ -26,5 +26,6 @@ class TestEntity extends SmartEntity
         'array_property' => self::TYPE_ARRAY,
         'flex_property' => FlexEntity::class,
         'test_array' => TestEntity::class . self::EXT_ARRAY,
+        'wrong_class' => '\Something\Not\Existing'
     ];
 }
