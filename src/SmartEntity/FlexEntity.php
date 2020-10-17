@@ -52,6 +52,7 @@ class FlexEntity implements Entity
     {
         $action = substr($name, 0, 3);
         $property = ChangeCase::camelToSnake(substr($name, 3));
+
         switch ($action) {
             case 'set':
                 return $this->set($property, $arguments);
@@ -60,6 +61,7 @@ class FlexEntity implements Entity
             case 'add':
                 return $this->add($property, $arguments);
         }
+
         throw new \RuntimeException('Call to undefined method '.__CLASS__.'::'.$name.'()');
     }
 
@@ -84,15 +86,36 @@ class FlexEntity implements Entity
         return null;
     }
 
-    private function add(string $name, array $arguments)
+    /**
+     * @param string $name
+     * @param array $arguments
+     * @return $this
+     * @throws InvalidArgumentException
+     */
+    protected function add(string $name, array $arguments)
     {
-        if (!isset($this->data[$name]) || is_array($this->data[$name])) {
-            $this->data[$name][] = $arguments[0];
+        if (!isset($this->data[$name])) {
+            $this->data[$name] = [];
+        }
+
+        if (is_array($this->data[$name])) {
+            $this->addArrayField($this->data[$name], $arguments[0], $arguments);
 
             return $this;
         }
 
         throw new InvalidArgumentException('Cannot add to [' . $name . '] property as it is not an array.');
+    }
+
+    protected function addArrayField(&$array, $value, array $arguments)
+    {
+        if (isset($arguments[1])) {
+            $array[(string) $arguments[1]] = $value;
+            return $array;
+        }
+
+        $array[] = $value;
+        return $array;
     }
 
     protected function fetchValue(array $arguments, $propertyName)
@@ -102,5 +125,25 @@ class FlexEntity implements Entity
         }
 
         return $arguments[0];
+    }
+
+    public function __clone()
+    {
+        $this->data = $this->cloneArray($this->data);
+    }
+
+    protected function cloneArray(array $data)
+    {
+        foreach ($data as $k => $v) {
+            if (is_object($v)) {
+                $data[$k] = clone $v;
+            }
+
+            if (is_array($v)) {
+                $data[$k] = $this->cloneArray($v);
+            }
+        }
+
+        return $data;
     }
 }

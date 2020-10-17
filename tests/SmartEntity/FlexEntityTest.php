@@ -90,6 +90,19 @@ class FlexEntityTest extends TestCase
         $this->assertSame($entity, $entity->addX('bbc'));
         $this->assertIsArray($entity->getX());
         $this->assertSame(['bbc'], $entity->getX());
+        $entity->addX('cnn');
+        $this->assertSame(['bbc', 'cnn'], $entity->getX());
+    }
+
+    public function testAddWithKey()
+    {
+        $entity = new FlexEntity();
+
+        $this->assertSame($entity, $entity->addX('bbc', 'uk'));
+        $this->assertIsArray($entity->getX());
+        $this->assertSame(['uk' => 'bbc'], $entity->getX());
+        $entity->addX('cnn', 'us');
+        $this->assertSame(['uk' => 'bbc', 'us' => 'cnn'], $entity->getX());
     }
 
     public function testAddToNonArray()
@@ -120,5 +133,14 @@ class FlexEntityTest extends TestCase
         $entity->setXyZ(3);
 
         $this->assertArrayHasKey('xy_z', $entity->toArray());
+    }
+
+    public function testClone()
+    {
+        $entity = FlexEntity::make(['obj' => FlexEntity::make([])]);
+
+        $entityTwo = clone $entity;
+
+        $this->assertNotSame($entity->getObj(), $entityTwo->getObj());
     }
 }
