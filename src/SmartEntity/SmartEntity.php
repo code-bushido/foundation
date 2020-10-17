@@ -16,8 +16,6 @@ use Bushido\Foundation\Exception;
 use Bushido\Foundation\Exceptions\InvalidArgumentException;
 
 /**
- * @todo clone implementation
- * @todo add method
  * @todo support for some common classes
  * @todo limited internal type arrays
  */
@@ -25,6 +23,13 @@ abstract class SmartEntity extends FlexEntity
 {
     protected $properties = [];
 
+    /**
+     * @param string $propertyName
+     * @param array $arguments
+     * @return $this
+     * @throws Exception
+     * @throws InvalidArgumentException
+     */
     protected function set(string $propertyName, array $arguments)
     {
         $value = $this->fetchValue($arguments, $propertyName);
@@ -43,20 +48,20 @@ abstract class SmartEntity extends FlexEntity
             }
 
             throw new InvalidArgumentException(
-                'Expected value to be type of [' . $this->propertyInternalTypes()[$type] . '] different type was given'
+                'Expected value to be type of [' . self::INTERNAL_TYPES[$type] . '] different type was given'
             );
         }
 
         if ($this->isTypeArrayOfObjects($type) && is_array($value)) {
-            return $this->processArrayOfObj($value, $type);
+            $value = $this->processArrayOfObj($value, $type);
         }
 
         return parent::set($propertyName, [$this->processObjectType($value, $type)]);
     }
 
-    private function isInternalType($type)
+    private function isInternalType($type): bool
     {
-        return is_numeric($type) && array_key_exists($type, $this->propertyInternalTypes());
+        return is_numeric($type) && array_key_exists($type, self::INTERNAL_TYPES);
     }
 
     private function isPropertySet($propertyName): bool
@@ -64,7 +69,14 @@ abstract class SmartEntity extends FlexEntity
         return array_key_exists($propertyName, $this->properties);
     }
 
-    private function processObjectType($value, $class)
+    /**
+     * @param $value
+     * @param $class
+     * @return mixed
+     * @throws Exception
+     * @throws InvalidArgumentException
+     */
+    private function processObjectType($value, string $class)
     {
         $this->isClassOrInterface($class);
 
@@ -76,16 +88,20 @@ abstract class SmartEntity extends FlexEntity
             return $value;
         }
 
-        throw new InvalidArgumentException(
-            'Expected value to be object of [' . $class . '] type different type was given'
-        );
+        throw new InvalidArgumentException('Expected value to be object of [' . $class . '] type different type was given');
     }
 
-    private function isClassOrInterface($class): bool
+    /**
+     * @param string $class
+     * @return bool
+     * @throws Exception
+     */
+    private function isClassOrInterface(string $class): bool
     {
         if (class_exists($class) || interface_exists($class)) {
             return true;
         }
+
         throw new Exception('Non existing class or interface [' . $class . ']');
     }
 
@@ -94,7 +110,14 @@ abstract class SmartEntity extends FlexEntity
         return strpos($type, '[]') !== false;
     }
 
-    private function processArrayOfObj(array $value, $type)
+    /**
+     * @param array $value
+     * @param $type
+     * @return array
+     * @throws Exception
+     * @throws InvalidArgumentException
+     */
+    private function processArrayOfObj(array $value, $type): array
     {
         $ar = [];
         $class = $this->getClassNameFromType($type);
@@ -106,9 +129,9 @@ abstract class SmartEntity extends FlexEntity
         return $ar;
     }
 
-    private function getClassNameFromType($type)
+    private function getClassNameFromType($type): string
     {
-        return (string) str_replace('[]', '', $type);
+        return (string) str_replace(self::EXT_ARRAY, '', $type);
     }
 
     private function validateInternalType($value, $type): bool
@@ -131,15 +154,39 @@ abstract class SmartEntity extends FlexEntity
         return false;
     }
 
-    private function propertyInternalTypes()
+    /**
+     * @param string $property
+     * @param array $arguments
+     * @return $this
+     * @throws Exception
+     * @throws InvalidArgumentException
+     */
+    protected function add(string $property, array $arguments)
     {
-        return [
-            self::TYPE_ARRAY => 'array',
-            self::TYPE_INT => 'int',
-            self::TYPE_STRING => 'string',
-            self::TYPE_BOOL => 'bool',
-            self::TYPE_FLOAT => 'float',
-            self::TYPE_NUMERIC => 'numeric',
-        ];
+        $this->fetchValue($arguments, $property);
+
+        if (!array_key_exists($property, $this->properties) ||
+            !($this->isArrayOfObjects($this->properties[$property]) || $this->properties[$property] == self::TYPE_ARRAY)
+        ) {
+            throw new Exception('Can not use addProperty on non object array property');
+        }
+
+        if ($arguments[0] === null) {
+            return $this;
+        }
+
+        if ($this->isArrayOfObjects($this->properties[$property])) {
+            $arguments[0] = $this->processObjectType(
+                $arguments[0],
+                $this->getClassNameFromType($this->properties[$property])
+            );
+        }
+
+        return parent::add($property, $arguments);
+    }
+
+    private function isArrayOfObjects($type): bool
+    {
+        return strpos($type, '[]') !== false;
     }
 }

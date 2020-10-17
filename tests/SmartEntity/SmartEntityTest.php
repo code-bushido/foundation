@@ -69,6 +69,33 @@ class SmartEntityTest extends TestCase
         $this->assertInstanceOf(FlexEntity::class, $entity->getFlexProperty());
     }
 
+    public function testAddObject()
+    {
+        $entity = TestEntity::make([]);
+
+        $entity->addTestArray([], 'x');
+
+        $this->assertInstanceOf(TestEntity::class, $entity->getTestArray()['x']);
+    }
+
+    public function testAddWrongObject()
+    {
+        $entity = TestEntity::make([]);
+
+        $this->expectException(InvalidArgumentException::class);
+
+        $entity->addTestArray(FlexEntity::make([]));
+    }
+
+    public function testClone()
+    {
+        $entity = TestEntity::make(['flex_property' => FlexEntity::make([])]);
+
+        $entityTwo = clone $entity;
+
+        $this->assertNotSame($entity->getFlexProperty(), $entityTwo->getFlexProperty());
+    }
+
     public function testToArray()
     {
         $ar = [

@@ -23,4 +23,15 @@ interface Entity extends EntityInterface, Makeable, Jsonable
     public const TYPE_NUMERIC = 12;
     public const TYPE_STRING = 16;
     public const TYPE_OBJECT = 32;
+
+    public const EXT_ARRAY = '[]';
+
+    public const INTERNAL_TYPES = [
+        self::TYPE_ARRAY => 'array',
+        self::TYPE_INT => 'int',
+        self::TYPE_STRING => 'string',
+        self::TYPE_BOOL => 'bool',
+        self::TYPE_FLOAT => 'float',
+        self::TYPE_NUMERIC => 'numeric',
+    ];
 }
