@@ -113,7 +113,7 @@ abstract class SmartEntity extends FlexEntity
 
     private function isTypeArrayOfObjects($type): bool
     {
-        return strpos($type, '[]') !== false;
+        return strpos($type, self::EXT_ARRAY) !== false;
     }
 
     /**
@@ -171,7 +171,8 @@ abstract class SmartEntity extends FlexEntity
     {
         $this->fetchValue($arguments, $property);
 
-        if (!array_key_exists($property, $this->properties) ||
+        if (
+            !array_key_exists($property, $this->properties) ||
             !($this->isTypeArrayOfObjects($this->properties[$property]) || $this->properties[$property] == self::TYPE_ARRAY)
         ) {
             throw new Exception('Can not use addProperty on non object array property');
