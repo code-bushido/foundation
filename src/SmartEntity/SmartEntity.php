@@ -52,7 +52,7 @@ abstract class SmartEntity extends FlexEntity
             );
         }
 
-        if ($this->isTypeArrayOfObjects($type) && is_array($value)) {
+        if ($this->isArrayOfObjects($type) && is_array($value)) {
             return parent::set($propertyName, [$this->processArrayOfObj($value, $type)]);
         }
 
@@ -111,7 +111,7 @@ abstract class SmartEntity extends FlexEntity
         throw new Exception('Non existing class or interface [' . $class . ']');
     }
 
-    private function isTypeArrayOfObjects($type): bool
+    private function isArrayOfObjects($type): bool
     {
         return strpos($type, self::EXT_ARRAY) !== false;
     }
@@ -171,9 +171,8 @@ abstract class SmartEntity extends FlexEntity
     {
         $this->fetchValue($arguments, $property);
 
-        if (
-            !array_key_exists($property, $this->properties) ||
-            !($this->isTypeArrayOfObjects($this->properties[$property]) || $this->properties[$property] == self::TYPE_ARRAY)
+        if (!array_key_exists($property, $this->properties) ||
+            !($this->isArrayOfObjects($this->properties[$property]) || $this->properties[$property] == self::TYPE_ARRAY)
         ) {
             throw new Exception('Can not use addProperty on non object array property');
         }
@@ -182,7 +181,7 @@ abstract class SmartEntity extends FlexEntity
             return $this;
         }
 
-        if ($this->isTypeArrayOfObjects($this->properties[$property])) {
+        if ($this->isArrayOfObjects($this->properties[$property])) {
             $arguments[0] = $this->processObjectType(
                 $arguments[0],
                 $this->getClassNameFromType($this->properties[$property])
