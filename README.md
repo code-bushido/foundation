@@ -16,25 +16,24 @@ Via Composer
 $ composer require code-bushido/foundation
 ```
 
-## Usage
+## Table of Contents
+### Contracts
+- [Arrayable](src/Contracts/Arrayable.php)
+- [EntityInterface](src/Contracts/EntityInterface.php)
+- [Indexable](src/Contracts/Indexable.php)
+- [Jsonable](src/Contracts/Jsonable.php)
+- [Makeable](src/Contracts/Makeable.php)
+- [Persistable](src/Contracts/Persistable.php)
+
+### Exceptions
+- [Exception](src/Exception.php)
+- [InvalidArgumentException](src/Exceptions/InvalidArgumentException.php)
+
 ### Smart Entity
-Smart Entity concept is a powerful implementation of getters and setters entity concept. 
+**Smart Entity** concept is a powerful implementation of getters and setters entity concept.  [See more](doc/SmartEntity.md)
 
-##### Life Cycle  
-It allows easy creation of the object by build-in factory and data extraction to an array (or JSON), simply it allows full-cycle like that:
-```php
-$entity = SmartEntity::make(['a1' => 22]);
-$entity->toArray(); //['a1' => 22]
-```
-
-#### Flex Entity
-Ready to use implementation with flexible properties, all you need to do is to set it using setter or by builtin factory.
-```php
-$entity = new \Bushido\Foundation\SmartEntity\FlexEntity();
-$entity->setFirstProperty('value');
-$entity->getFirstProperty(); // 'value'
-$entity->toArray(); // ['first_property' => 'value']
-```
+### Helpers
+- [PsrLoggerTrait](src/Helpers/PsrLoggerTrait.php) - provides base support for optional PSR Logger Interface implementation
 
 ## Change log
 Please see [CHANGELOG](CHANGELOG.md) for more information on what has changed recently.

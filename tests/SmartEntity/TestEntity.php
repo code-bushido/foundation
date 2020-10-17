@@ -27,5 +27,4 @@ class TestEntity extends SmartEntity
         'flex_property' => FlexEntity::class,
         'test_array' => TestEntity::class . self::EXT_ARRAY,
     ];
-
 }
