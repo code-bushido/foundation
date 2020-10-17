@@ -112,7 +112,7 @@ class FlexEntity implements Entity
         if (isset($arguments[1])) {
             $array[(string) $arguments[1]] = $value;
 
-        return $array;
+            return $array;
         }
 
         $array[] = $value;
