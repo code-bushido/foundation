@@ -111,16 +111,18 @@ class FlexEntity implements Entity
     {
         if (isset($arguments[1])) {
             $array[(string) $arguments[1]] = $value;
-            return $array;
+
+        return $array;
         }
 
         $array[] = $value;
+
         return $array;
     }
 
-    protected function fetchValue(array $arguments, $propertyName)
+    protected function fetchValue(array $arguments, string $propertyName)
     {
-        if (count($arguments) == 0) {
+        if (empty($arguments)) {
             throw new \RuntimeException('Missing argument on ' . __CLASS__ . '::set_' . $propertyName . '() call');
         }
 
