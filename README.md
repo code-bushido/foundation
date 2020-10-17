@@ -17,6 +17,24 @@ $ composer require code-bushido/foundation
 ```
 
 ## Usage
+### Smart Entity
+Smart Entity concept is a powerful implementation of getters and setters entity concept. 
+
+##### Life Cycle  
+It allows easy creation of the object by build-in factory and data extraction to an array (or JSON), simply it allows full-cycle like that:
+```php
+$entity = SmartEntity::make(['a1' => 22]);
+$entity->toArray(); //['a1' => 22]
+```
+
+#### Flex Entity
+Ready to use implementation with flexible properties, all you need to do is to set it using setter or by builtin factory.
+```php
+$entity = new \Bushido\Foundation\SmartEntity\FlexEntity();
+$entity->setFirstProperty('value');
+$entity->getFirstProperty(); // 'value'
+$entity->toArray(); // ['first_property' => 'value']
+```
 
 ## Change log
 Please see [CHANGELOG](CHANGELOG.md) for more information on what has changed recently.

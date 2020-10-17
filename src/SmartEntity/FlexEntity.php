@@ -92,7 +92,7 @@ class FlexEntity implements Entity
             return $this;
         }
 
-        throw new InvalidArgumentException('Expected property [' . $name . '] to be array type');
+        throw new InvalidArgumentException('Cannot add to [' . $name . '] property as it is not an array.');
     }
 
     protected function fetchValue(array $arguments, $propertyName)
