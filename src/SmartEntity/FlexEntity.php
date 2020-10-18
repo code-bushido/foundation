@@ -123,7 +123,9 @@ class FlexEntity implements Entity
     protected function fetchValue(array $arguments, string $propertyName)
     {
         if (empty($arguments)) {
-            throw new \RuntimeException('Missing argument on ' . __CLASS__ . '::set_' . $propertyName . '() call');
+            throw new \RuntimeException(
+                'Missing argument on ' . __CLASS__ . '::set' . ChangeCase::snakeToCamel($propertyName, true) . '() call'
+            );
         }
 
         return $arguments[0];
